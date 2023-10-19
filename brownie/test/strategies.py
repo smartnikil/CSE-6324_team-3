@@ -112,7 +112,19 @@ def _get_array_length(var_str: str, length: ArrayLengthType, dynamic_len: int) -
             f"dimensions for the given array ({dynamic_len})"
         )
     return length.pop()
+# New function
+def create_multi_dimensional_tuple(base_type,dimensions):
+    if not dimensions:
+        return base_type
+    else:
+        inner_tuple = create_multi_dimensional_tuple(base_type, dimensions[1:])
+        return (inner_tuple,) * dimensions[0]
 
+#New function
+def convert_to_tuple(base_type, dimensions):
+    output_str = create_multi_dimensional_tuple(base_type,dimensions)
+    output_str = str(output_str).replace("'", "")
+    return '{}'.format(output_str)
 
 def _array_strategy(
     abi_type: BasicType,
