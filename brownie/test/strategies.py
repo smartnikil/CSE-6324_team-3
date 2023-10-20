@@ -123,7 +123,7 @@ def create_multi_dimensional_tuple(base_type,dimensions):
 #New function
 def convert_to_tuple(base_type, dimensions):
     output_str = create_multi_dimensional_tuple(base_type,dimensions)
-    output_str = str(output_str).replace("'", "")
+    output_str = str(output_str).replace("'", "").replace(" ", "")
     return '{}'.format(output_str)
 
 def _array_strategy(
@@ -149,10 +149,10 @@ def _array_strategy(
 #     strat._LazyStrategy__representation = repr_  # type: ignore
 #     return strat
 # New code
-tes = '{}{}'.format(abi_type.base,abi_type.sub)
-arr = [element for tupl in abi_type.arrlist for element in tupl]
-tupstrat = convert_to_tuple(tes,arr)
-return strategy(tupstrat)
+    tes = '{}{}'.format(abi_type.base,abi_type.sub)
+    arr = [element for tupl in abi_type.arrlist for element in tupl]
+    tupstrat = convert_to_tuple(tes,arr)
+    return strategy(tupstrat)
 
 
 def _tuple_strategy(abi_type: TupleType) -> SearchStrategy:
