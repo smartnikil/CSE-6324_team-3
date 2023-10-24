@@ -6,8 +6,8 @@ Brownie uses Ganache cli for command line interface and is heavily dependent on 
 Development setup:
 1) Clone the git repository into the local.[8]
 2) Create a virtual environment within brownie local.
-3) Installed wheel, ganache-cli and all required dependencies.
-4) Follow requirements-dev.txt 
+3) Installed wheel, ganache-cli and all required dependencies 
+4) Follow requirements-dev.txt to install the required dependencies or refer to brownie source code in github
 
 Project structure:
 Root folder
