@@ -112,7 +112,6 @@ def _get_array_length(var_str: str, length: ArrayLengthType, dynamic_len: int) -
             f"dimensions for the given array ({dynamic_len})"
         )
     return length.pop()
-
 # New function
 def create_multi_dimensional_tuple(base_type,dimensions):
     if not dimensions:
@@ -134,44 +133,26 @@ def _array_strategy(
     unique: bool = False,
     **kwargs: Any,
 ) -> SearchStrategy:
-    #single dimension array or unique = False
-    # Old code
-    if len(abi_type.arrlist) == 1 or not unique:
-        if abi_type.arrlist[-1]:
-            min_len = max_len = abi_type.arrlist[-1][0]
-        else:
-            dynamic_len = len([i for i in abi_type.arrlist if not i])
-            min_len = _get_array_length("min_length", min_length, dynamic_len)
-            max_len = _get_array_length("max_length", max_length, dynamic_len)
-        if abi_type.item_type.is_array:
-            kwargs.update(min_length=min_length, max_length=max_length, unique=unique)
-        base_strategy = strategy(abi_type.item_type.to_type_str(), **kwargs)
-        strat = st.lists(base_strategy, min_size=min_len, max_size=max_len, unique=unique)
-    
-    # New code
-    #multi-dimensional array and unique = True
-    elif len(abi_type.arrlist) > 1 and unique:
-        #dimension segeregation
-        outer_list_len = abi_type.arrlist[-1]
-        inner_tuple_len = abi_type.arrlist[:len(abi_type.arrlist)-1]
-        
-        #generate tuple strategy (inner)
-        tes = '{}{}'.format(abi_type.base,abi_type.sub)
-        arr = [element for tupl in inner_tuple_len for element in tupl]
-        tupstrat = strategy(convert_to_tuple(tes,arr[::-1]))
-         
-        #lambda function generation
-        u_by = ()
-        for i in range(inner_tuple_len[0][0]):
-            u_by = u_by + (lambda x:x[i],)
-        
-        #final strategy generation
-        strat = st.lists(tupstrat, min_size=outer_list_len[0], max_size=outer_list_len[0], unique_by=u_by)
-
-    # swap 'size' for 'length' in the repr
-    repr_ = "length".join(strat.__repr__().rsplit("size", maxsplit=2))
-    strat._LazyStrategy__representation = repr_  # type: ignore
-    return strat
+# Old code
+#     if abi_type.arrlist[-1]:
+#         min_len = max_len = abi_type.arrlist[-1][0]
+#     else:
+#         dynamic_len = len([i for i in abi_type.arrlist if not i])
+#         min_len = _get_array_length("min_length", min_length, dynamic_len)
+#         max_len = _get_array_length("max_length", max_length, dynamic_len)
+#     if abi_type.item_type.is_array:
+#         kwargs.update(min_length=min_length, max_length=max_length, unique=unique)
+#     base_strategy = strategy(abi_type.item_type.to_type_str(), **kwargs)
+#     strat = st.lists(base_strategy, min_size=min_len, max_size=max_len, unique=unique)
+#     # swap 'size' for 'length' in the repr
+#     repr_ = "length".join(strat.__repr__().rsplit("size", maxsplit=2))
+#     strat._LazyStrategy__representation = repr_  # type: ignore
+#     return strat
+# New code
+    tes = '{}{}'.format(abi_type.base,abi_type.sub)
+    arr = [element for tupl in abi_type.arrlist for element in tupl]
+    tupstrat = convert_to_tuple(tes,arr)
+    return strategy(tupstrat)
 
 
 def _tuple_strategy(abi_type: TupleType) -> SearchStrategy:
