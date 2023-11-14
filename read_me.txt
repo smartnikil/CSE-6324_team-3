@@ -2,7 +2,7 @@ Version details:
 Python – 3.7.9
 Brownie – 1.19.3
 Ganache CLI - v6.12.2 (ganache-core: 2.13.2)
-Brownie uses Ganache cli for command line interface and is heavily dependent on it.[7]
+Brownie uses Ganache cli for command line interface and is heavily dependent on it.[1]
 Development setup:
 1) Clone the git repository into the local.[8]
 2) Create a virtual environment within brownie local.
@@ -18,3 +18,7 @@ o Test folder
 ▪ Strategies.py (Wrapper implementation for the strategies)
 -
 Test script (Where test functions are written to test the functionality)
+
+
+Reference:
+1) https://github.com/eth-brownie/brownie/issues/320
