@@ -213,3 +213,25 @@ def strategy(type_str: str, **kwargs: Any) -> SearchStrategy:
         return _bytes_strategy(abi_type, **kwargs)
 
     raise ValueError(f"No strategy available for type: {type_str}")
+    
+def tuples_to_list(litup) -> list:
+    if isinstance(litup, tuple):
+        #convert tuple to list - recursive calling
+        return [tuples_to_list(item) for item in litup]
+    else:
+        #return if individual element
+        return litup
+
+def example(strat: SearchStrategy):
+    #call hypothesis.strategy.example and store the examples
+    exmple = strat.example()
+
+    if isinstance(exmple, list):
+        #convert list of tuples into list of lists
+        exmpl = [tuples_to_list(ele) for ele in exmple]
+    else:
+        # for others, simply return examples generated
+        exmpl = exmple
+
+    #return list of lists 
+    return exmpl
